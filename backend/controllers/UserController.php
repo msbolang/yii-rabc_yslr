@@ -52,7 +52,7 @@ class UserController extends Controller {
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout', 'change-password', 'index', 'view', 'delete', 'create', 'activate'],
+                        'actions' => ['logout', 'change-password', 'index', 'view','update', 'delete', 'create', 'activate'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -119,6 +119,8 @@ class UserController extends Controller {
         ]);
     }
 
+
+    
     /**
      * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -183,15 +185,16 @@ class UserController extends Controller {
             $post = Yii::$app->request->post();
           $model->setPassword($model->password);
           $model->generateAuthKey();
-       
+           if(isset($post['User']['group'])){
+               $model->relation = $post['User']['group'];
+           };
             if (!$model->validate()) {
-                Yii::$app->getSession()->setFlash('success', '保存失敗');
+                Yii::$app->getSession()->setFlash('error', '保存失敗');
                 return $this->redirect(['user/create']);
             }
 
             if ($model->save()) {
                 $id = $model->attributes['id'];
-                var_dump($id);
                 $this->set_group($id);
              
                 Yii::$app->getSession()->setFlash('success', '保存成功');
@@ -211,13 +214,68 @@ class UserController extends Controller {
         ]);
     }
 
-    public function set_group($userId){
+    
+        
+      public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+        if(!$this->updateAndCreateVerification($id)){
+              Yii::$app->getSession()->setFlash('error', '保存失敗!  用户已被其他登陆账号绑定');
+                return $this->redirect(['user/index']);
+        }
+         $post = Yii::$app->request->post();
+         if(isset($post['User']['group'])){
+              $model->relation = $post['User']['group'];
+           };
+        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
+                $id = $model->attributes['id'];
+                $this->set_group($id,true);
+              Yii::$app->getSession()->setFlash('success', '保存成功');
+            return $this->redirect(['index']);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+    
+    /**
+     * 绑定前验证
+     */
+    private function updateAndCreateVerification($id){
+        $group = false;
+        $relationId = false;
+        $post = Yii::$app->request->post();
+         if(isset($post['User']['group'])){
+              $group = $post['User']['group'];
+           };
+           
+        if(isset($post['User']['relationId'])){
+               $relationId = $post['User']['relationId'];
+           };  
+ 
+        if($group&&$relationId){
+             $rule = User::find()->where(['relation'=>$group,'relationId'=>$relationId])
+                    ->andWhere(['!=','id',$id])
+                    ->one();
+             if($rule){
+               return false;
+             }
+        } 
+        return true;
+    }
+    
+    public function set_group($userId,$up=null){
         $post = Yii::$app->request->post();
         $group = $post['User']['group'];
         if(empty($group)){
             return false;
         }
-        $model = new AuthAssignment();
+        if($up){ 
+            $model = AuthAssignment::find()->where(['user_id'=>$userId])->one();
+        }else{
+            $model = new AuthAssignment();
+        }
         $model->item_name = $group;
         $model->user_id = $userId;
         $model->created_at = time();

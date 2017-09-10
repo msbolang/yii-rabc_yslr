@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'performance_royalty')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'belong')->dropDownList($model->finddoctor()) ?>
+    <?= $form->field($model, 'belong')->dropDownList($model->finddoctor(),['prompt' => '请选择医生']) ?>
 
     
     <?= $form->field($model, 'status')->dropDownList(['1'=>'有效','0'=>'无效'])->hiddenInput(['value'=>1])->label(false);?>

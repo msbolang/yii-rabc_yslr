@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                  
                     
              ['label'=>'创建者',  'attribute' => 'username',  'value' => function($model){
-                    return $model->user;
+                    return $model->UserView;
             }],
             // 'updated_at',
             // 'updated_use',

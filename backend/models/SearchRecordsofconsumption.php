@@ -21,7 +21,7 @@ class SearchRecordsofconsumption extends Recordsofconsumption
     {
         return [
             [['id', 'customer_id', 'category', 'TimeToSpend', 'integral', 'status', 'created_at', 'create_use', 'updated_at', 'updated_use'], 'integer'],
-            [['SalesmanNumber', 'DoctorNumber','name','category_name'], 'safe'],
+            [['Salesman','SalesmanCommission', 'DoctorNumber','name','category_name'], 'safe'],
             [['price'], 'number'],
         ];
     }
@@ -76,8 +76,12 @@ class SearchRecordsofconsumption extends Recordsofconsumption
             'updated_use' => $this->updated_use,
         ]);
 
-        $query->andFilterWhere(['like', 'SalesmanNumber', $this->SalesmanNumber])
-            ->andFilterWhere(['like', 'DoctorNumber', $this->DoctorNumber])
+        $query->andFilterWhere(['like', 'Salesman', $this->Salesman])
+            ->andFilterWhere(['like', 'SalesmanCommission', $this->SalesmanCommission])
+            ->andFilterWhere(['like', 'Doctor', $this->Doctor])    
+            ->andFilterWhere(['like', 'DoctorCommission', $this->DoctorCommission])
+            ->andFilterWhere(['like', 'Cooperative', $this->Cooperative])    
+            ->andFilterWhere(['like', 'CooperativeCommission', $this->CooperativeCommission])   
             ->andFilterWhere(['like', 'customer.name', $this->name]) 
            ->andFilterWhere(['like', 'hospitalprojectcategory.category_name', $this->category_name]) ;  
         return $dataProvider;

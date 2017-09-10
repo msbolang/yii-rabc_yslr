@@ -15,14 +15,8 @@ use kartik\datetime\DateTimePicker;
 
 
     <?= $form->field($model, 'customer_id')->dropDownList($model->getCustomerName(), ['prompt' => '请选择客户']); ?>
-    <?= $form->field($model, 'SalesmanNumber')->textInput(['maxlength' => true]) ?>
-
-<?= $form->field($model, 'DoctorNumber')->textInput(['maxlength' => true]) ?>
-
-
     <?= $form->field($model, 'category')->dropDownList($model->getCategoryArr(), ['prompt' => '请选择项目']); ?>
     <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'TimeToSpend')->widget(DateTimePicker::classname(), [
         'name' => 'datetime_400',
         'options' => ['placeholder' => date('Y-m-d', time()), 'value' => $model->TimeToSpend ? date('Y-m-d', $model->TimeToSpend) : date('Y-m-d', time()),],
@@ -40,6 +34,24 @@ use kartik\datetime\DateTimePicker;
 
     <?= $form->field($model, 'integral')->textInput() ?>
 
+    
+      
+    
+    
+ <?= $form->field($model, 'Salesman')->dropDownList($model->findUserGroupName("业务员"), ['prompt' => '请选择业务员']); ?>
+
+ <?= $form->field($model, 'SalesmanCommission')->textInput(['maxlength' => true]) ?>
+ 
+ <?= $form->field($model, 'Doctor')->dropDownList($model->findUserGroupName("医生"), ['prompt' => '请选择医生']); ?>
+    
+  <?= $form->field($model, 'DoctorCommission')->textInput(['maxlength' => true]) ?>
+    
+ <?= $form->field($model, 'Cooperative')->dropDownList($model->findUserGroupName("合作商"), ['prompt' => '请选择合作商']); ?>
+ 
+ <?= $form->field($model, 'CooperativeCommission')->textInput(['maxlength' => true]) ?>
+
+    
+    
     <?= $form->field($model, 'status')->dropDownList(['1' => '有效', '0' => '无效'])->hiddenInput(['value' => 1])->label(false); ?>
 
     <?= $form->field($model, 'created_at')->textInput()->hiddenInput(['value' => $model->created_at ? $model->created_at : time()])->label(false); ?>

@@ -128,7 +128,8 @@ return [
             'site/logout',
             'site/error',
             'gii/*',
-            'debug/*'
+            'debug/*',
+            'api/*'
          // 'admin/*',//允许所有人访问admin节点及其子节点
         ]
     ],

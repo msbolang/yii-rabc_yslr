@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   return $model->getViewCustomerId();
                 }
             ],
-            'SalesmanNumber',
+//            'SalesmanNumber',
             'DoctorNumber',
            [
                 'label' => '项目',
@@ -62,20 +62,20 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'create_use',
 //            'updated_at',
 //            'updated_use',
-                             [
+             [
                 'label' => '创建时间',
                 'attribute' => 'created_at',
                 'value' => function($model) {
                     return $model->created_at ? date('Y-m-d', $model->created_at) : '';
                 }],
 
-             [
-                'label' => '创建人',
-                'attribute' => 'create_use',
-                'value' => function($model) {
-                    return $model->getUser('create');
-                }
-            ],     
+//             [
+//                'label' => '创建人',
+//                'attribute' => 'create_use',
+//                'value' => function($model) {
+//                    return $model->getUser('create');
+//                }
+//            ],     
         ],
     ]) ?>
 

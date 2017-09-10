@@ -19,7 +19,7 @@ use Yii;
  * @property integer $updated_at
  * @property integer $updated_use
  */
-class Hospitalclientlist extends \yii\db\ActiveRecord
+class Hospitalclientlist extends TotalModel
 {
     /**
      * @inheritdoc
@@ -125,7 +125,7 @@ class Hospitalclientlist extends \yii\db\ActiveRecord
     
      public function doctor(){
        $belong = User::find()->where(['id'=>$this->belong])->one();
-       if($belong->username){
+       if(isset($belong->username)){
            return $belong->username;
        }
     }

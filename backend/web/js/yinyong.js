@@ -7,12 +7,12 @@
  * 
  * @type window.location.pathname|DOMString 则栏定位
  */
-var pathname = window.location.pathname;
-$("li a").each(function() {
-var href = $(this).attr("href");
-if(pathname == href){
-$(this).parents("ul").parent("li").addClass("active");
-$(this).parent("li").addClass("active");
-}
-});
+//var pathname = window.location.pathname;
+//$("li a").each(function() {
+//var href = $(this).attr("href");
+//if(pathname == href){
+//$(this).parents("ul").parent("li").addClass("active");
+//$(this).parent("li").addClass("active");
+//}
+//});
 

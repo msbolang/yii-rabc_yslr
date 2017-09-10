@@ -37,11 +37,12 @@ class Recordsofconsumption extends TotalModel
     public function rules()
     {
         return [
-            [['customer_id', 'SalesmanNumber', 'DoctorNumber', 'price', 'TimeToSpend', 'created_at', 'create_use', 'updated_at', 'updated_use'], 'required'],
+            [['customer_id',   'price', 'TimeToSpend', 'created_at', 'create_use', 'updated_at', 'updated_use'], 'required'],
             [['customer_id', 'category',  'integral', 'status', 'created_at', 'create_use', 'updated_at', 'updated_use'], 'integer'],
             [['price'], 'number'],
             [['TimeToSpend'],'setTimeToSpend'],
-            [['SalesmanNumber', 'DoctorNumber'], 'string', 'max' => 255],
+            [['Salesman','SalesmanCommission','Doctor','DoctorCommission','Cooperative','CooperativeCommission'],'safe']
+            
         ];
     }
 
@@ -63,12 +64,17 @@ class Recordsofconsumption extends TotalModel
         return [
             'id' => Yii::t('app', 'ID'),
             'customer_id' => Yii::t('app', '客户ID'),
-            'SalesmanNumber' => Yii::t('app', '业务员编号'),
-            'DoctorNumber' => Yii::t('app', '医生编号'),
+            'Salesman' => Yii::t('app', '所属业务员'),
+            'SalesmanCommission' => Yii::t('app', '业务员提成'),
+            'Doctor' => Yii::t('app', '所属医生'),
+            'DoctorCommission' => Yii::t('app', '医生提成'),
+            'Cooperative' => Yii::t('app', '所属合作商'),
+            'CooperativeCommission' => Yii::t('app', '合作商提成'),
+            'Cooperative' => Yii::t('app', '所属合作商'),
             'category' => Yii::t('app', '所做项目'),
             'price' => Yii::t('app', '消费价格'),
             'TimeToSpend' => Yii::t('app', '消费时间'),
-            'integral' => Yii::t('app', '加积分'),
+            'integral' => Yii::t('app', '客户加积分'),
             'status' => Yii::t('app', '状态'),
             'created_at' => Yii::t('app', '创建时间'),
             'create_use' => Yii::t('app', '创建人'),
@@ -86,31 +92,8 @@ class Recordsofconsumption extends TotalModel
         return new RecordsofconsumptionQuery(get_called_class());
     }
     
-    public function getCustomerName(){
-        $arr = array();
-        $arrAy = Customer::find()->asarray()->all();
-//        echo '<pre>';print_r($arrAy);exit;
-        if(!empty($arrAy)){
-            foreach ($arrAy as $key => $value) {
-                $arr[$value['id']] = $value['name'];
-            }
-          
-        }
-          return $arr;
-    }
+  
     
-      public function getCategoryArr(){
-        $arr = array();
-        $arrAy = Hospitalprojectcategory::find()->asarray()->all();
-
-        if(!empty($arrAy)){
-            foreach ($arrAy as $key => $value) {
-                $arr[$value['id']] = $value['category_name'];
-            }
-          
-        }
-          return $arr;
-    }
     
     
      public function getCustomer(){  

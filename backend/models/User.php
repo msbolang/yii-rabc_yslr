@@ -70,7 +70,7 @@ class User extends ActiveRecord implements IdentityInterface
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
-            [['msg','group'],'safe'],
+            [['msg','group','relationId','relation'],'safe'],
 //            [['group'],'setgroup']
         ];
     }
@@ -228,4 +228,13 @@ class User extends ActiveRecord implements IdentityInterface
         return $arr;
     }
 
+    public function getGroupFormUser($gorup,$userid){
+        if(empty($gorup)||empty($userid)){
+            return [];
+        }
+        if($gorup == '合作商'){
+              $user = Cooperative::find()->where(['id'=>$userid])->one();
+        }
+        return isset($user->coname)?["$userid"=>$user->coname]:[];
+    }
 }

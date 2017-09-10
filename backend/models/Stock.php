@@ -25,7 +25,7 @@ use Yii;
  * @property integer $updated_at
  * @property integer $updated_use
  */
-class Stock extends \yii\db\ActiveRecord
+class Stock extends TotalModel
 {
     /**
      * @inheritdoc
