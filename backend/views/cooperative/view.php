@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="cooperative-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+ 
 
     <p>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -28,20 +28,31 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'cooperativeNumber',
-            'coname',
+//            'id',
+             'coname',
             'phone',
             'adder',
             'passportNumber',
-            'createuser',
-            'loginname',
-            'loginID',
-            'status',
-            'created_at',
-            'create_use',
-            'updated_at',
-            'updated_use',
+//            'createuser',
+//            'loginname',
+//            'loginID',
+//            'status',
+              [
+                'label' => '创建时间',
+                'attribute' => 'created_at',
+                'value' => function($model) {
+                    return $model->created_at ? date('Y-m-d', $model->created_at) : '';
+                }],
+//            'created_at',
+             [
+                'label' => '创建人',
+                'attribute' => 'create_use',
+                'value' => function($model) {
+                  return $model->getUser('create');
+                }
+            ],  
+//            'updated_at',
+//            'updated_use',
         ],
     ]) ?>
 

@@ -1,11 +1,18 @@
 <?php
 use yii\helpers\Html;
-
+use app\myclass\MyHelper;
+        
 /* @var $this \yii\web\View */
 /* @var $content string */
 $userId = Yii::$app->user->getId();
 use mdm\admin\models\User;
 $user = User::findIdentity($userId);
+$userMsg = new \app\myclass\UserMsg();
+$msgArr = $userMsg::getMsg($userId);
+//$showTs = "You have ".count($msgArr)." messages";
+$showTs = "您有".count($msgArr)."条未读公告";
+//$showAllMsg = "See All Messages";
+$showAllMsg = "查看所有公告";
 ?>
 
 <header class="main-header">
@@ -26,85 +33,40 @@ $user = User::findIdentity($userId);
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-envelope-o"></i>
-                        <span class="label label-success">4</span>
+                        <span class="label label-success" <?php if(!count($msgArr)){ ?> style="display:none;"<?php }?>><?= count($msgArr)?></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">You have 4 messages</li>
+                        <li class="header"><?=$showTs?></li>
                         <li>
                             <!-- inner menu: contains the actual data -->
                             <ul class="menu">
+                                
+                                <?php foreach ($msgArr as $key => $value) { ?>
+                                    
+                          
                                 <li><!-- start message -->
-                                    <a href="#">
+                                    <a href="/notice/view?id=<?=$value['id']?>">
                                         <div class="pull-left">
                                             <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle"
                                                  alt="User Image"/>
                                         </div>
                                         <h4>
-                                            Support Team
-                                            <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                          
+                                            <?=  MyHelper::truncate_utf8_string($value['title'],7); ?>
+                                            <small><i class="fa fa-clock-o"></i>  <?=date('Y-m-d H:i',$value['created_at'])?></small>
                                         </h4>
-                                        <p>Why not buy a new awesome theme?</p>
+                                        <p><?=  MyHelper::truncate_utf8_string($value['content'],18); ?></p>
                                     </a>
                                 </li>
                                 <!-- end message -->
-                                <li>
-                                    <a href="#">
-                                        <div class="pull-left">
-                                            <img src="<?= $directoryAsset ?>/img/user3-128x128.jpg" class="img-circle"
-                                                 alt="user image"/>
-                                        </div>
-                                        <h4>
-                                            AdminLTE Design Team
-                                            <small><i class="fa fa-clock-o"></i> 2 hours</small>
-                                        </h4>
-                                        <p>Why not buy a new awesome theme?</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="pull-left">
-                                            <img src="<?= $directoryAsset ?>/img/user4-128x128.jpg" class="img-circle"
-                                                 alt="user image"/>
-                                        </div>
-                                        <h4>
-                                            Developers
-                                            <small><i class="fa fa-clock-o"></i> Today</small>
-                                        </h4>
-                                        <p>Why not buy a new awesome theme?</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="pull-left">
-                                            <img src="<?= $directoryAsset ?>/img/user3-128x128.jpg" class="img-circle"
-                                                 alt="user image"/>
-                                        </div>
-                                        <h4>
-                                            Sales Department
-                                            <small><i class="fa fa-clock-o"></i> Yesterday</small>
-                                        </h4>
-                                        <p>Why not buy a new awesome theme?</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="pull-left">
-                                            <img src="<?= $directoryAsset ?>/img/user4-128x128.jpg" class="img-circle"
-                                                 alt="user image"/>
-                                        </div>
-                                        <h4>
-                                            Reviewers
-                                            <small><i class="fa fa-clock-o"></i> 2 days</small>
-                                        </h4>
-                                        <p>Why not buy a new awesome theme?</p>
-                                    </a>
-                                </li>
+                                <?php } ?>
+                                
                             </ul>
                         </li>
-                        <li class="footer"><a href="#">See All Messages</a></li>
+                        <li class="footer"><a href="/notice/index"><?=$showAllMsg?></a></li>
                     </ul>
                 </li>
-                <li class="dropdown notifications-menu">
+                <li class="dropdown notifications-menu" style="display:none;">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-bell-o"></i>
                         <span class="label label-warning">10</span>
@@ -147,7 +109,7 @@ $user = User::findIdentity($userId);
                     </ul>
                 </li>
                 <!-- Tasks: style can be found in dropdown.less -->
-                <li class="dropdown tasks-menu">
+                <li class="dropdown tasks-menu" style="display:none;">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-flag-o"></i>
                         <span class="label label-danger">9</span>
@@ -241,29 +203,29 @@ $user = User::findIdentity($userId);
                             <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle"
                                  alt="User Image"/>
 
-                            <p>
+<!--                            <p>
                                 Alexander Pierce - Web Developer
                                 <small>Member since Nov. 2012</small>
-                            </p>
+                            </p>-->
                         </li>
                         <!-- Menu Body -->
                         <li class="user-body">
                             <div class="col-xs-4 text-center">
-                                <a href="#">Followers</a>
+                                <!--<a href="#">Followers</a>-->
                             </div>
                             <div class="col-xs-4 text-center">
-                                <a href="#">Sales</a>
+                                <!--<a href="#">Sales</a>-->
                             </div>
                             <div class="col-xs-4 text-center">
-                                <a href="#">Friends</a>
+                                <!--<a href="#">Friends</a>-->
                             </div>
                         </li>
                         <!-- Menu Footer-->
-                        <li class="user-footer">
-                            <div class="pull-left">
+                        <li class="user-footer" style="text-align: center;">
+<!--                            <div class="pull-left">
                                 <a href="#" class="btn btn-default btn-flat">Profile</a>
-                            </div>
-                            <div class="pull-right">
+                            </div>-->
+                            <div class="pull-right----">
                                 <?= Html::a(
                                     'Sign out',
                                     ['/site/logout'],
@@ -275,7 +237,7 @@ $user = User::findIdentity($userId);
                 </li>
 
                 <!-- User Account: style can be found in dropdown.less -->
-                <li>
+                <li style="display:none;">
                     <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
                 </li>
             </ul>

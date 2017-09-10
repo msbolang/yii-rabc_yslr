@@ -8,7 +8,7 @@ use dmstr\widgets\Alert;
         <?php if (isset($this->blocks['content-header'])) { ?>
             <h1><?= $this->blocks['content-header'] ?></h1>
         <?php } else { ?>
-            <h1>
+            <h1 style="display: none;">
                 <?php
                 if ($this->title !== null) {
                     echo \yii\helpers\Html::encode($this->title);

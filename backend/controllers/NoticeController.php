@@ -8,7 +8,7 @@ use app\models\SearchNotice;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\models\User;
 /**
  * NoticeController implements the CRUD actions for Notice model.
  */
@@ -37,7 +37,10 @@ class NoticeController extends Controller
     {
         $searchModel = new SearchNotice();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+      
 
+    
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -51,11 +54,43 @@ class NoticeController extends Controller
      */
     public function actionView($id)
     {
+        $userId = Yii::$app->user->getId();
+        $admin = \app\models\AuthAssignment::find()->where(['user_id'=>$userId,'item_name'=>ADMINNAME])->one();
+        $msg = User::find()->select('msg')->asarray()->where(['id'=>$userId])->one();
+        if(empty($msg)){
+            echo '访问出错！';exit;
+        }
+        $true = false;
+        $msgArr = explode(',', $msg['msg']); 
+        
+        foreach ($msgArr as $key => $value) {
+            if(abs($value)==$id){ 
+                $true = true;
+                $this->setMyMsg($msgArr,$userId,$id);
+            }
+        }
+
+   
+        if($admin||$true){
+            
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
+    }
 
+    private function setMyMsg($msgArr,$userId,$id){
+        $model = User::find()->where(['id'=>$userId])->one();
+          foreach ($msgArr as $key => $value) {
+               if(abs($value)==$id){ 
+                   $msgArr[$key] = abs($value);
+               }
+          }
+         $model->msg =  implode(',',$msgArr);
+         if(!$model->save(false)){
+             var_dump($model->getErrors());exit;
+         }
+    }
     /**
      * Creates a new Notice model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -64,9 +99,11 @@ class NoticeController extends Controller
     public function actionCreate()
     {
         $model = new Notice();
-
+        $model->scenario = 'create';
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $id = $model->attributes['id'];
+            $model->setUserMsg($id);
+            return $this->redirect(['index']);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -83,9 +120,10 @@ class NoticeController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+         $model->scenario = 'update';
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            
+            return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -102,7 +140,7 @@ class NoticeController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        $this->deleteUserMsg($id);
         return $this->redirect(['index']);
     }
 
@@ -120,5 +158,24 @@ class NoticeController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    private function deleteUserMsg($id) {
+        $userArr = User::find()->select('id')->asArray()->all();
+        foreach ($userArr as $key => $val) {
+                $model = User::find()->where(['id' => $val['id']])->one();
+                $msgArr = explode(',',$model->msg); 
+                $f = '-'.$id;
+                foreach ($msgArr as $k=>$v){
+                    if($v==$f || $v==$id){
+                        unset($msgArr[$k]);
+                    }
+                }
+                $msgStr = implode(',',$msgArr);
+                $model->msg = $msgStr;
+                if(!$model->save(FALSE)){
+                    var_dump($model->getErrors());exit;
+                };
+            }
     }
 }

@@ -1,5 +1,5 @@
 <?php
-
+use mdm\admin\components\Helper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -12,11 +12,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="notice-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Notice'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Helper::filterActionColumn(['create'])?Html::a(Yii::t('app', 'Create Notice'), ['create'], ['class' => 'btn btn-success']):''; ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,18 +23,29 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+//            'id',
             'usergroup',
             'title',
-            'content:ntext',
-            'peruser:ntext',
+//            'content:ntext',
+            
+//            'peruser:ntext',
             // 'status',
-            // 'created_at',
-            // 'create_use',
+          
+            [
+                  'attribute' => 'created_at',
+                  'value' => function($data){
+                           return isset($data['created_at'])?  date('Y-m-d H:i:s',$data['created_at']):'' ;
+                       }
+            ],
+                 
+                    
+             ['label'=>'创建者',  'attribute' => 'username',  'value' => function($model){
+                    return $model->user;
+            }],
             // 'updated_at',
             // 'updated_use',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn','template' => Helper::filterActionColumn('{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{delete}')],
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

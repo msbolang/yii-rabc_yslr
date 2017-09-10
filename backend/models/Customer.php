@@ -19,7 +19,7 @@ use Yii;
  * @property integer $updated_at
  * @property integer $updated_use
  */
-class Customer extends \yii\db\ActiveRecord {
+class Customer extends TotalModel {
 
     /**
      * @inheritdoc
@@ -67,20 +67,7 @@ class Customer extends \yii\db\ActiveRecord {
         return new CustomerQuery(get_called_class());
     }
 
-    public function getcreate_use() {
-        $obj = User::find()->where(['id' => $this->create_use])->one();
-        if ($obj) {
-            return $obj->username;
-        }
-    }
-    
-    public function getupdated_use() {
-        $obj = User::find()->where(['id' => $this->updated_use])->one();
-        if ($obj) {
-            return $obj->username;
-        }
-    }
-    
+
     
 
 }

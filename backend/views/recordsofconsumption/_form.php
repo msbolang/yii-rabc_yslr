@@ -20,7 +20,7 @@ use kartik\datetime\DateTimePicker;
 <?= $form->field($model, 'DoctorNumber')->textInput(['maxlength' => true]) ?>
 
 
-    <?= $form->field($model, 'category')->dropDownList($model->getCategory(), ['prompt' => '请选择项目']); ?>
+    <?= $form->field($model, 'category')->dropDownList($model->getCategoryArr(), ['prompt' => '请选择项目']); ?>
     <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'TimeToSpend')->widget(DateTimePicker::classname(), [

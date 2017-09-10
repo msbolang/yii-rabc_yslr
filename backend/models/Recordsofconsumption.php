@@ -21,7 +21,7 @@ use Yii;
  * @property integer $updated_at
  * @property integer $updated_use
  */
-class Recordsofconsumption extends \yii\db\ActiveRecord
+class Recordsofconsumption extends TotalModel
 {
     /**
      * @inheritdoc
@@ -99,10 +99,10 @@ class Recordsofconsumption extends \yii\db\ActiveRecord
           return $arr;
     }
     
-      public function getCategory(){
+      public function getCategoryArr(){
         $arr = array();
         $arrAy = Hospitalprojectcategory::find()->asarray()->all();
-//        echo '<pre>';print_r($arrAy);exit;
+
         if(!empty($arrAy)){
             foreach ($arrAy as $key => $value) {
                 $arr[$value['id']] = $value['category_name'];
@@ -139,20 +139,6 @@ class Recordsofconsumption extends \yii\db\ActiveRecord
             return $obj->category_name;
         }
     }
-    
-       public function getcreate_use() {
-        $obj = User::find()->where(['id' => $this->create_use])->one();
-        if ($obj) {
-            return $obj->username;
-        }
-    }
-    
-        public function getupdated_use() {
-        $obj = User::find()->where(['id' => $this->updated_use])->one();
-        if ($obj) {
-            return $obj->username;
-        }
-    }
-    
+       
     
 }

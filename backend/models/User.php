@@ -7,7 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use mdm\admin\components\Configs;
-
+use app\models\AuthItem;
 /**
  * User model
  *
@@ -28,7 +28,7 @@ class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 10;
- 
+    public $group;
     public $password;
     /**
      * @inheritdoc
@@ -70,7 +70,8 @@ class User extends ActiveRecord implements IdentityInterface
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
-            
+            [['msg','group'],'safe'],
+//            [['group'],'setgroup']
         ];
     }
 
@@ -216,5 +217,15 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasOne(AuthAssignment::className(),['user_id'=>'id']); // 这里怎么写，请看文档和结合你的实际表结构,这里是用member的mid去关联memdesc的mid  
     }  
     
-    
+    public function getGroup(){
+          $arr = array();
+          $userGroup = AuthItem::find()->select("name")->where(['type' => 1])->asarray()->all();
+        if (!empty($userGroup)) {
+            foreach ($userGroup as $key => $value) {
+                $arr[$value['name']] = $value['name'];
+            }
+        }
+        return $arr;
+    }
+
 }

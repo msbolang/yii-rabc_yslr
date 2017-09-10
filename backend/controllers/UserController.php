@@ -25,6 +25,7 @@ use yii\filters\AccessControl;
 //use yii\web\NotFoundHttpException;
 use yii\base\UserException;
 use yii\mail\BaseMailer;
+use app\models\AuthAssignment;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -189,7 +190,12 @@ class UserController extends Controller {
             }
 
             if ($model->save()) {
+                $id = $model->attributes['id'];
+                var_dump($id);
+                $this->set_group($id);
+             
                 Yii::$app->getSession()->setFlash('success', '保存成功');
+                
                 return $this->redirect(['user/index']);
             } else {
                 var_dump($model->getErrors());
@@ -205,6 +211,20 @@ class UserController extends Controller {
         ]);
     }
 
+    public function set_group($userId){
+        $post = Yii::$app->request->post();
+        $group = $post['User']['group'];
+        if(empty($group)){
+            return false;
+        }
+        $model = new AuthAssignment();
+        $model->item_name = $group;
+        $model->user_id = $userId;
+        $model->created_at = time();
+        if(!$model->save()){
+            var_dump($model->getErrors());exit;
+        };
+    }
     /**
      * Request reset password
      * @return string

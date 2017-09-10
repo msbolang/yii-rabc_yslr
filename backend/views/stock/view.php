@@ -78,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '创建人',
                 'attribute' => 'create_use',
                 'value' => function($model) {
-                  return $model->getcreate_use();
+                    return $model->getUser('create');
                 }
             ],     
                     

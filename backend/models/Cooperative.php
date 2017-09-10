@@ -22,7 +22,8 @@ use Yii;
  * @property integer $updated_at
  * @property integer $updated_use
  */
-class Cooperative extends \yii\db\ActiveRecord
+//class Cooperative extends \yii\db\ActiveRecord
+class Cooperative extends TotalModel
 {
     /**
      * @inheritdoc
@@ -38,9 +39,9 @@ class Cooperative extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cooperativeNumber', 'coname', 'phone', 'adder', 'passportNumber', 'createuser', 'created_at', 'create_use', 'updated_at', 'updated_use'], 'required'],
+            [[ 'coname', 'phone', 'adder', 'passportNumber', 'created_at', 'create_use', 'updated_at', 'updated_use'], 'required'],
             [['createuser', 'loginID', 'status', 'created_at', 'create_use', 'updated_at', 'updated_use'], 'integer'],
-            [['cooperativeNumber'], 'string', 'max' => 50],
+//            [['cooperativeNumber'], 'string', 'max' => 50],
             [['coname', 'phone', 'adder', 'passportNumber', 'loginname'], 'string', 'max' => 255],
         ];
     }
@@ -52,7 +53,7 @@ class Cooperative extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'cooperativeNumber' => Yii::t('app', '合作商代码'),
+//            'cooperativeNumber' => Yii::t('app', '合作商代码'),
             'coname' => Yii::t('app', '姓名'),
             'phone' => Yii::t('app', '电话'),
             'adder' => Yii::t('app', '地址'),

@@ -29,6 +29,18 @@ return [
 
     'components' => [
         
+        /*
+         * *自定义类
+         */
+      'userMsg' => [
+            'class' => 'app\myclass\UserMsg'                       // 'class' => 'app\components\Gettoken'
+        ], 
+        
+        'myHelper' =>[
+            'class' => 'app\myclass\MyHelper'
+        ],
+        
+        
             /*********yii2-admin*******/
         //components数组中加入authManager组件,有PhpManager和DbManager两种方式, 
 //PhpManager将权限关系保存在文件里,这里使用的是DbManager方式,将权限关系保存在数据库. 

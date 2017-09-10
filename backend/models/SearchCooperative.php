@@ -19,7 +19,7 @@ class SearchCooperative extends Cooperative
     {
         return [
             [['id', 'createuser', 'loginID', 'status', 'created_at', 'create_use', 'updated_at', 'updated_use'], 'integer'],
-            [['cooperativeNumber', 'coname', 'phone', 'adder', 'passportNumber', 'loginname'], 'safe'],
+            [[ 'coname', 'phone', 'adder', 'passportNumber', 'loginname'], 'safe'],
         ];
     }
 
@@ -69,8 +69,7 @@ class SearchCooperative extends Cooperative
             'updated_use' => $this->updated_use,
         ]);
 
-        $query->andFilterWhere(['like', 'cooperativeNumber', $this->cooperativeNumber])
-            ->andFilterWhere(['like', 'coname', $this->coname])
+        $query->andFilterWhere(['like', 'coname', $this->coname])
             ->andFilterWhere(['like', 'phone', $this->phone])
             ->andFilterWhere(['like', 'adder', $this->adder])
             ->andFilterWhere(['like', 'passportNumber', $this->passportNumber])

@@ -129,24 +129,5 @@ class Stock extends \yii\db\ActiveRecord
         return  $this->hasOne(User::className(),['id'=>'create_use']);
     }
     
-    public function getcategory(){
-      $obj = StockCategory::find()->where(['id'=>$this->category])->one();
-      if($obj){
-          return $obj->category_name;
-      }
-    }
-    
-       public function getcreate_use() {
-        $obj = User::find()->where(['id' => $this->create_use])->one();
-        if ($obj) {
-            return $obj->username;
-        }
-    }
-    
-        public function getupdated_use() {
-        $obj = User::find()->where(['id' => $this->updated_use])->one();
-        if ($obj) {
-            return $obj->username;
-        }
-    }
+
 }
